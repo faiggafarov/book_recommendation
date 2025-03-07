@@ -1,119 +1,65 @@
-Book Recommendation System using Levenshtein Distance
+# Book Recommendation System
 
-Overview
+## Overview
+This project builds a **book recommendation system** using the **Goodbooks Kaggle Dataset**. It implements multiple recommendation techniques, including **Levenshtein distance, Content-Based Filtering, and Collaborative Filtering** to suggest books.
 
-This project builds a Book Recommendation System using the Goodbooks Kaggle dataset. The system applies content-based filtering and collaborative filtering methods, leveraging the Levenshtein distance for improved book matching and recommendations.
+## Features
+- **Data Preprocessing:** Cleaning and filtering missing data
+- **Exploratory Data Analysis:** Publication year distribution, rating analysis, and correlation analysis
+- **Content-Based Filtering:** Recommends books based on title, author, and tags
+- **Collaborative Filtering:** Suggests books based on user ratings
+- **Levenshtein Algorithm:** Corrects user-input book titles by finding the closest match
 
-Features
+## Technologies Used
+- Python
+- Pandas
+- NumPy
+- Matplotlib & Seaborn
+- Scikit-learn
+- Levenshtein Distance
+- K-Nearest Neighbors (KNN)
 
-Data Cleaning & Exploration: Prepares and analyzes book ratings and metadata.
+## Installation & Usage
+### Prerequisites
+Install the required libraries using the following command:
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn python-Levenshtein
+```
 
-Content-Based Filtering: Uses cosine similarity and KNN to find similar books based on metadata.
+### Running the Code
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/book-recommendation.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd book-recommendation
+   ```
+3. Run the Jupyter Notebook or Python script:
+   ```bash
+   jupyter notebook book_recommendation_levenshtein.ipynb
+   ```
+   or
+   ```bash
+   python book_recommendation_levenshtein.py
+   ```
 
-Collaborative Filtering: Employs Nearest Neighbors on user ratings for personalized recommendations.
+## Recommendation Methods
+### 1. Content-Based Filtering
+- Uses **book titles, authors, average ratings, and tags** for recommendations.
+- Computes similarity using **Cosine Similarity**.
 
-Levenshtein Distance Matching: Enhances title-matching accuracy for improved recommendations.
+### 2. Collaborative Filtering
+- Applies a **KNN-based recommendation system** using user ratings.
+- Identifies similar users and recommends books based on their preferences.
 
-Dataset
+### 3. Levenshtein Distance for Book Matching
+- Finds the closest matching book title when the user inputs a misspelled book name.
 
-The system utilizes data from the Goodbooks Kaggle dataset:
+## Results
+- Content-based filtering recommends books based on relevant metadata.
+- Collaborative filtering generates personalized suggestions by analyzing similar users' ratings.
+- Levenshtein distance improves recommendation accuracy by correcting misspelled book titles.
 
-books.csv: Metadata for books
-
-ratings.csv: User ratings
-
-book_tags.csv: Book tags
-
-tags.csv: Tag names
-
-Installation
-
-Ensure you have Python 3.8+ installed. Install dependencies using:
-
-pip install pandas numpy matplotlib seaborn scikit-learn scipy Levenshtein
-
-Usage
-
-1. Data Cleaning and Exploration
-
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-books = pd.read_csv('books.csv', on_bad_lines='skip')
-ratings = pd.read_csv('ratings.csv')
-
-print("Oldest book: ", books['original_publication_year'].min())
-print("Newer book: ", books['original_publication_year'].max())
-
-2. Content-Based Filtering
-
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-def get_recs(title, cosine_sim):
-    title = title.lower()
-    idx = indices[title]
-    sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:11]
-    book_indices = [i[0] for i in sim_scores]
-    return list(books['original_title'].iloc[book_indices])
-
-# Example usage
-test = get_recs('Pride and Prejudice', cosine_sim2)
-print(test)
-
-3. Collaborative Filtering with KNN
-
-from sklearn.neighbors import NearestNeighbors
-from scipy.sparse import csr_matrix
-
-book_user_mat = ratings.pivot(index='book_id', columns='user_id', values='rating').fillna(0)
-book_user_mat_sparse = csr_matrix(book_user_mat.values)
-
-model_knn = NearestNeighbors(metric='cosine', algorithm='brute', n_neighbors=20, n_jobs=-1)
-model_knn.fit(book_user_mat_sparse)
-
-def make_recommendation(model_knn, data, mapper, title, n_recommendations):
-    idx = mapper[title]
-    indices = model_knn.kneighbors(data[idx], n_neighbors=n_recommendations+1)[1]
-    raw_recommends = sorted(list(indices.squeeze().tolist()))[:n_recommendations]
-    reverse_mapper = {v: k for k, v in mapper.items()}
-    return [reverse_mapper[idx] for idx in raw_recommends]
-
-# Example usage
-recommendations = make_recommendation(model_knn, book_user_mat_sparse, indices, "The Maze Runner", 10)
-print(recommendations)
-
-4. Levenshtein Distance for Title Matching
-
-from Levenshtein import ratio
-
-def levenshtein_matching(mapper, fav_book):
-    match_tuple = [(title, idx, ratio(title.lower(), fav_book.lower())) for title, idx in mapper.items() if ratio(title.lower(), fav_book.lower()) >= 0.6]
-    match_tuple = sorted(match_tuple, key=lambda x: x[2], reverse=True)
-    return match_tuple[0][1] if match_tuple else None
-
-# Example usage
-matched_index = levenshtein_matching(indices, "Ready Player One")
-print(matched_index)
-
-Results
-
-Provides personalized book recommendations.
-
-Ensures robust title matching for user queries.
-
-Future Enhancements
-
-Implement a hybrid recommendation system.
-
-Improve tag selection for content-based filtering.
-
-Expand dataset sources for better accuracy.
-
-License
-
-This project is licensed under the MIT License.
-
+## Contributing
+Contributions are welcome! If you have suggestions or improvements, feel free to open a pull request.
