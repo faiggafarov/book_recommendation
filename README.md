@@ -29,7 +29,7 @@ pip install pandas numpy matplotlib seaborn scikit-learn python-Levenshtein
 ### Running the Code
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/book-recommendation.git
+   git clone https://github.com/faiggafarov/book-recommendation.git
    ```
 2. Navigate to the project directory:
    ```bash
